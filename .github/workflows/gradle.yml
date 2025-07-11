@@ -21,6 +21,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: gradle build
+      uses: ./gradlew clean build
+
     - name: Set up Docker
       uses: docker/setup-buildx-action@v3
 
