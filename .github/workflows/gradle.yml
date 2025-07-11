@@ -41,8 +41,8 @@ jobs:
     - name: Trigger CodeDeploy (No Load Balancer)
       run: |
         aws deploy create-deployment \
-          --application-name MyApp \
-          --deployment-group-name MyDeploymentGroupNoLB \
+          --application-name cicd-test \
+          --deployment-group-name insung \
           --revision '{
             "revisionType": "GitHub",
             "gitHubLocation": {
