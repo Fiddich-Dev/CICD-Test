@@ -6,8 +6,8 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: my-app-repo
-  CONTAINER_NAME: my-app
+  ECR_REPOSITORY: cicd-test
+  CONTAINER_NAME: cicd-test
 
 jobs:
   build-and-deploy:
