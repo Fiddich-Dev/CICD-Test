@@ -37,15 +37,15 @@ jobs:
         docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
         echo "image=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
     
-    - name: Trigger CodeDeploy
+    - name: Trigger CodeDeploy (No Load Balancer)
       run: |
         aws deploy create-deployment \
           --application-name MyApp \
-          --deployment-group-name MyAppDeploymentGroup \
+          --deployment-group-name MyDeploymentGroupNoLB \
           --revision '{
-            "revisionType": "AppSpecContent",
-            "appSpecContent": {
-              "content": "version: 0.0\nResources:\n  - TargetService:\n      Type: AWS::ECS::Service\n      Properties:\n        TaskDefinition: \"${{ steps.build-image.outputs.image }}\"\n        LoadBalancerInfo:\n          ContainerName: \"${{ env.CONTAINER_NAME }}\"\n          ContainerPort: 8080",
-              "sha256": "$(echo -n "version: 0.0\nResources:\n  - TargetService:\n      Type: AWS::ECS::Service\n      Properties:\n        TaskDefinition: \"${{ steps.build-image.outputs.image }}\"\n        LoadBalancerInfo:\n          ContainerName: \"${{ env.CONTAINER_NAME }}\"\n          ContainerPort: 8080" | sha256sum | cut -d \" \" -f 1)"
+            "revisionType": "GitHub",
+            "gitHubLocation": {
+              "repository": "${{ github.repository }}",
+              "commitId": "${{ github.sha }}"
             }
           }'
